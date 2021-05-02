@@ -1,0 +1,97 @@
+---
+title: "PKO Health Tables"
+author: "Chris Newton"
+date: "4/23/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd("~/Desktop/pko_health_21")
+
+library(haven)
+library(modelsummary)
+library(tidyverse)
+library(Zelig)
+
+# Total violence
+m.out <- read_dta("data/matched_data.dta")
+m.out$idps_per100000 <- m.out$idps_per1000 / 100
+m.out$year <- as.factor(m.out$year)
+no_outliers_matched <- filter(m.out, deathstotal_and_osv_10000 < 2.5 )
+additional_row <- tibble::tribble(~name, ~model1, ~model2, ~model3, ~model4,
+                                  "Outliers Omitted: ", "No", "No", "Yes", "Yes")
+m.out$osv_per1000 <- m.out$osv / 1000
+m.weights <- as.vector(m.out$weights)
+no.weights <- as.vector(no_outliers_matched$weights)
+
+cm <- c(
+    'pkoyearsany' = 'Years with PKO',
+    'deathstotal_and_osv_10000' = 'Total Violence',
+    'osv_per1000' = 'OSV',
+    'deathstotal_new' = 'Battle-Related Deaths',
+    'pkoyearsany:deathstotal_and_osv_10000' = 'Total Violence x Years with PKO',
+    'osv_per1000:pkoyearsany' = 'OSV x Years with PKO',
+    'deathstotal_new:pkoyearsany' = 'Battle-Related Deaths x Years with PKO',
+    'priorpko' = "Previous PKO",
+    'idps_per1000' = 'Internally Displaced Persons',
+    'helog_knn' = 'Health Expend. (log)',
+    'hdi_knn' = 'HDI',
+    'civilwarborder' = 'Boarding Civil Wars',
+    'urbangrowth_knn' = 'Urban Growth',
+    'gini_knn' = 'Gini',
+    'tropical' = 'Tropical',
+    'xpolity_knn' = 'x-Polity',
+    'ef_knn' = 'Ethnic Fractionalization',
+    'year2005' = '2005',
+    'year2010' = '2010',
+    'year2015' = '2015',
+    '(Intercept)' = 'Constant'
+    )
+
+
+
+gof_custom <- modelsummary::gof_map
+gof_custom$omit[gof_custom$raw == 'AIC'] <- TRUE
+gof_custom$omit[gof_custom$raw == 'BIC'] <- TRUE
+gof_custom$omit[gof_custom$raw == 'logLik'] <- TRUE
+
+
+table_1 = list(
+    `(21)` = zelig(dale ~ pkoyearsany + deathstotal_and_osv_10000 +
+        idps_per100000 + helog_knn + hdi_knn + civilwarborder +
+        urbangrowth_knn + gini_knn + tropical + xpolity_knn + ef_knn +
+        priorpko + year, data = m.out, weights = m.weights,
+        model = "ls", cite = FALSE) %>%
+    from_zelig_model(),
+
+    `(22)` = zelig(dale ~ pkoyearsany + deathstotal_and_osv_10000 +
+        idps_per100000 + pkoyearsany:deathstotal_and_osv_10000 + helog_knn +
+        hdi_knn + civilwarborder + urbangrowth_knn + gini_knn + tropical +
+        xpolity_knn + ef_knn + priorpko + year, data = m.out,
+        weights = m.weights, model = "ls", cite = FALSE) %>%
+    from_zelig_model(),
+
+    `(23)` = zelig(dale ~ deathstotal_and_osv_10000 + idps_per100000 +
+        helog_knn + hdi_knn + civilwarborder + urbangrowth_knn + gini_knn +
+        tropical + xpolity_knn + ef_knn + priorpko + year +
+        pkoyearsany, data = no_outliers_matched, weights = no.weights,
+        model = "ls", cite = FALSE) %>%
+    from_zelig_model(),
+
+    `(24)` = zelig(dale ~ pkoyearsany + pkoyearsany:deathstotal_and_osv_10000 +
+        deathstotal_and_osv_10000 + idps_per100000 + helog_knn + hdi_knn +
+        civilwarborder + urbangrowth_knn + gini_knn + tropical + xpolity_knn +
+        ef_knn + priorpko + year, data = no_outliers_matched,
+        weights = no.weights, model = "ls", cite = FALSE) %>%
+    from_zelig_model()
+)
+
+modelsummary(table_1, stars = T, 
+             title = "TABLE 2: CEM regressions – Total fatalities",
+             add_rows = additional_row, coef_map = cm,
+             gof_omit = "AIC|Dev|DF|Sigma|Stat|P|Log")
+```
