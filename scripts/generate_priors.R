@@ -55,26 +55,50 @@ i15_44sd$mean_sd <- (as.numeric(i15_44sd$m15_44sd_i) +
 View(i15_44sd)
 
 
-# Interactive models (untransformed) ---------------------------------------
-# Calculating the average standard deviation of the posterior.
-m15_44se_i <- c(0.52, 0.33, 0.08, 2.76, 1.87, 3.70, 2.57, 22.83, 3.78,
-    0.24, 1.21)
-f15_44se_i <- c(0.60, 0.36, 0.09, 3.77, 2.62, 5.46, 3.58, 31.63, 4.96,
-    0.32, 1.50)
+# Additive models (unstandardized) ---------------------------------------------
+m15_44B_a_r <- c(ma_r[2], ma_r[3], ma_r[4], ma_r[5], ma_r[6], ma_r[7], ma_r[8],
+    ma_r[9], ma_r[10], ma_r[11])
+m15_44se_a_r <- c(ma_r[13], ma_r[14], ma_r[15], ma_r[16], ma_r[17], ma_r[18],
+    ma_r[19], ma_r[20], ma_r[21], ma_r[22])
+m15_44sd_a_r <- sapply(m15_44se_a, function(m15_44se_a) sqrt(178) * m15_44se_a)
 
+f15_44B_a_r <- c(fa_r[2], fa_r[3], fa_r[4], fa_r[5], fa_r[6], fa_r[7], fa_r[8],
+    fa_r[9], fa_r[10], fa_r[11])
+f15_44se_a_r <- c(fa_r[13], fa_r[14], fa_r[15], fa_r[16], fa_r[17], fa_r[18],
+    fa_r[19], fa_r[20], fa_r[21], fa_r[22])
+f15_44sd_a_r <- sapply(f15_44se_a_r, function(f15_44se_a_r) sqrt(178) * f15_44se_a_r)
+
+
+a15_44B_r <- data.frame(cbind(m15_44B_a_r, f15_44B_a_r, var_names_a))
+a15_44B_r$mean_B <- (as.numeric(a15_44B_r$m15_44B_a_r) +
+    as.numeric(a15_44B_r$f15_44B_a_r)) / -2
+View(a15_44B_r)
+
+a15_44sd <- data.frame(cbind(m15_44sd_a, f15_44sd_a, var_names_a))
+a15_44sd$mean_sd <- (as.numeric(a15_44sd$m15_44sd_a) +
+    as.numeric(a15_44sd$f15_44sd_a)) / 2
+View(a15_44sd)
+
+# Interactive models (unstandardized) ------------------------------------------
+m15_44B_i <- c(mi_r[2], mi_r[3], mi_r[4], mi_r[5], mi_r[6], mi_r[7], mi_r[8],
+    mi_r[9], mi_r[10], mi_r[11], mi_r[12])
+m15_44se_i <- c(mi_r[14], mi_r[15], mi_r[16], mi_r[17], mi_r[18], mi_r[19],
+    mi_r[20], mi_r[21], mi_r[22], mi_r[23], mi_r[24])
 m15_44sd_i <- sapply(m15_44se_i, function(m15_44se_i) sqrt(178) * m15_44se_i)
+
+f15_44B_i <- c(fi_r[2], fi_r[3], fi_r[4], fi_r[5], fi_r[6], fi_r[7], fi_r[8],
+    fi_r[9], fi_r[10], fi_r[11], fi_r[12])
+f15_44se_i <- c(fi_r[14], fi_r[15], fi_r[16], fi_r[17], fi_r[18], fi_r[19],
+    fi_r[20], fi_r[21], fi_r[22], fi_r[23], fi_r[24])
 f15_44sd_i <- sapply(f15_44se_i, function(f15_44se_i) sqrt(178) * f15_44se_i)
 
-a15_44sd_i <- data.frame(cbind(m15_44sd_i, f15_44sd_i))
-a15_44sd_i$mean_sd <- (a15_44sd_i$m15_44sd_i + a15_44sd_i$f15_44sd_i) / 2
-View(a15_44sd_i)
 
-# Calculating the average coeffecient and reversing the direction.
-m15_44B_i <- c(-1.43, 0.46, -0.04, 7.83, -2.31, -3.62, 5.92, 53.33, 3.45,
-    0.22, 0.95)
-f15_44B_i <- c(-1.67, 0.65, -0.06, 12.50, -1.76, -7.24, 8.54, 51.77, 2.93,
-    0.05, 0.99)
+i15_44B <- data.frame(cbind(m15_44B_i, f15_44B_i, var_names_i))
+i15_44B$mean_B <- (as.numeric(i15_44B$m15_44B_i) +
+    as.numeric(i15_44B$f15_44B_i)) / -2
+View(i15_44B)
 
-a15_44B_i <- data.frame(cbind(m15_44B_i, f15_44B_i))
-a15_44B_i$mean_B <- (a15_44B_i$m15_44B_i + a15_44B_i$f15_44B_i) / -2
-View(a15_44B_i)
+i15_44sd <- data.frame(cbind(m15_44sd_i, f15_44sd_i, var_names_i))
+i15_44sd$mean_sd <- (as.numeric(i15_44sd$m15_44sd_i) +
+    as.numeric(i15_44sd$f15_44sd_i)) / 2
+View(i15_44sd)
