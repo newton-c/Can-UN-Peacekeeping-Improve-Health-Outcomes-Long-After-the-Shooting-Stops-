@@ -3,15 +3,14 @@ library(lmtest)
 library(sandwich)
 
 ghobarah_etal_replication <- read_dta("data/Replication_Interactions.dta")
-ghobarah_etal_replication
 
 ghobarah_etal_replication$k_total_log <-
     ghobarah_etal_replication$`_k_total_log`
 
-ghobarah_etal <- ghobarah_etal_replication
 
 # standardizing
-ghobarah_etal -> mutate_at(c('dalyp15_44', 'pko_years', 'deathn91_97',
+ghobarah_etal <- ghobarah_etal_replication %>%
+	mutate_at(c('dalyp15_44', 'pko_years', 'deathn91_97',
     'k_total_log', 'log_educational_attainment', 'contig_civil_war',
     'growth_urban_pop_un', 'gini', 'polity', 'log_vanhanen'), ~(scale(.) %>%
     as.vector))
@@ -23,8 +22,7 @@ ghobarah_etal$pko_yearsxdeath91_97 <- ghobarah_etal$pko_years *
 dat_2_1 <- filter(ghobarah_etal, gndr == 2 & ct == 1)
 dat_3_25 <- filter(ghobarah_etal, gndr == 3 & ct == 25)
 
-"PKO years", "Death", "Contig. CW", "Health Exp", "Education",
-    "Urban Growth", "Gini", "Tropical", "Polity", "Ethnic Fract.")
+
 # male, additive
 ma <- lm(dalyp15_44 ~ pko_years + deathn91_97 + contig_civil_war + k_total_log +
     log_educational_attainment + growth_urban_pop_un + gini +
@@ -60,8 +58,7 @@ ghobarah_etal$pko_yearsxdeath91_97 <- ghobarah_etal$pko_years *
 dat_2_1r <- filter(ghobarah_etal_replication, gndr == 2 & ct == 1)
 dat_3_25r <- filter(ghobarah_etal_replication, gndr == 3 & ct == 25)
 
-"PKO years", "Death", "Contig. CW", "Health Exp", "Education",
-    "Urban Growth", "Gini", "Tropical", "Polity", "Ethnic Fract.")
+
 # male, additive
 ma_r <- lm(dalyp15_44 ~ pko_years + deathn91_97 + contig_civil_war +
     k_total_log + log_educational_attainment + growth_urban_pop_un + gini +

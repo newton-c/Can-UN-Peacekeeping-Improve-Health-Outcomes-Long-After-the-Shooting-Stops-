@@ -11,7 +11,7 @@ d$y15 <- ifelse(d$year == 2015, 1, 0)
 d$tropical <- ifelse(is.na(d$tropical), 1, d$tropical)
 d$priorpko <- ifelse(is.na(d$priorpko), 1, d$priorpko)
 d$osv_per1000 <- d$osv / 1000
-d$deathstotal_and_osv_1000 <- d$deathstotal_and_osv_10000 * 10
+d$deathstotal_and_osv_1000 <- d$deathstotal_and_osv_10000 / 10
 
 d$pkoxdeath <- (d$pkoyearsany * d$deathstotal_and_osv_1000)
 d$pkoxosv <- (d$pkoyearsany * d$osv_per1000)

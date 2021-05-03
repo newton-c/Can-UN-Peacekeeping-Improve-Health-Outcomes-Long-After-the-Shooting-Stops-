@@ -19,12 +19,12 @@ f15_44sd_a <- sapply(f15_44se_a, function(f15_44se_a) sqrt(178) * f15_44se_a)
 a15_44B <- data.frame(cbind(m15_44B_a, f15_44B_a, var_names_a))
 a15_44B$mean_B <- (as.numeric(a15_44B$m15_44B_a) +
     as.numeric(a15_44B$f15_44B_a)) / -2
-View(a15_44B)
+#View(a15_44B)
 
 a15_44sd <- data.frame(cbind(m15_44sd_a, f15_44sd_a, var_names_a))
 a15_44sd$mean_sd <- (as.numeric(a15_44sd$m15_44sd_a) +
     as.numeric(a15_44sd$f15_44sd_a)) / 2
-View(a15_44sd)
+#View(a15_44sd)
 
 # Interactive models (standardized) --------------------------------------------
 var_names_i <- c("PKO years", "Death", "PKO x Death", "Contig. CW",
@@ -47,12 +47,12 @@ f15_44sd_i <- sapply(f15_44se_i, function(f15_44se_i) sqrt(178) * f15_44se_i)
 i15_44B <- data.frame(cbind(m15_44B_i, f15_44B_i, var_names_i))
 i15_44B$mean_B <- (as.numeric(i15_44B$m15_44B_i) +
     as.numeric(i15_44B$f15_44B_i)) / -2
-View(i15_44B)
+#View(i15_44B)
 
 i15_44sd <- data.frame(cbind(m15_44sd_i, f15_44sd_i, var_names_i))
 i15_44sd$mean_sd <- (as.numeric(i15_44sd$m15_44sd_i) +
     as.numeric(i15_44sd$f15_44sd_i)) / 2
-View(i15_44sd)
+#View(i15_44sd)
 
 
 # Additive models (unstandardized) ---------------------------------------------
@@ -72,12 +72,12 @@ f15_44sd_a_r <- sapply(f15_44se_a_r, function(f15_44se_a_r) sqrt(178) * f15_44se
 a15_44B_r <- data.frame(cbind(m15_44B_a_r, f15_44B_a_r, var_names_a))
 a15_44B_r$mean_B <- (as.numeric(a15_44B_r$m15_44B_a_r) +
     as.numeric(a15_44B_r$f15_44B_a_r)) / -2
-View(a15_44B_r)
+#View(a15_44B_r)
 
 a15_44sd <- data.frame(cbind(m15_44sd_a, f15_44sd_a, var_names_a))
 a15_44sd$mean_sd <- (as.numeric(a15_44sd$m15_44sd_a) +
     as.numeric(a15_44sd$f15_44sd_a)) / 2
-View(a15_44sd)
+#View(a15_44sd)
 
 # Interactive models (unstandardized) ------------------------------------------
 m15_44B_i <- c(mi_r[2], mi_r[3], mi_r[4], mi_r[5], mi_r[6], mi_r[7], mi_r[8],
@@ -96,9 +96,9 @@ f15_44sd_i <- sapply(f15_44se_i, function(f15_44se_i) sqrt(178) * f15_44se_i)
 i15_44B <- data.frame(cbind(m15_44B_i, f15_44B_i, var_names_i))
 i15_44B$mean_B <- (as.numeric(i15_44B$m15_44B_i) +
     as.numeric(i15_44B$f15_44B_i)) / -2
-View(i15_44B)
+#View(i15_44B)
 
 i15_44sd <- data.frame(cbind(m15_44sd_i, f15_44sd_i, var_names_i))
 i15_44sd$mean_sd <- (as.numeric(i15_44sd$m15_44sd_i) +
     as.numeric(i15_44sd$f15_44sd_i)) / 2
-View(i15_44sd)
+#View(i15_44sd)

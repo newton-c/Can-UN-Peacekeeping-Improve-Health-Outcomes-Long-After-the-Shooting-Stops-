@@ -22,6 +22,8 @@ library(patchwork)
 library(rethinking)
 library(sandwich)
 
+theme_set(theme_bw(base_family = "serif"))
+
 # Generate the raw and standardized results from table 1 and the appendix to
 # use to calculate priors.
 source("scripts/ghobarah_etal_replication.R")

@@ -65,9 +65,11 @@ ggplot() +
         axis.text.x = element_blank(),
         axis.text.y = element_blank(),
         axis.ticks = element_blank(),
-        legend.position = "right")
+        legend.position = "right",
+        legend.key.size = unit(.5, 'cm')
+    )
 
-ggsave("figs/map.png", height = 4, width = 6)
+ggsave("figs/map.png", height = 8, width = 12)
 
 
 # Chad -------------------------------------------------------------------------
