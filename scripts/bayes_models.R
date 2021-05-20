@@ -5,6 +5,168 @@ library(rethinking)
 
 d <- read_dta("data/hale_data.dta")
 
+# Regularized priors ----------------------------------------------------------
+# PKO, no interaction.
+total_violence_add <- map2stan(
+    alist(
+        hale ~ dnorm(mu, sigma),
+        mu <- a + Bpko * pko_years + Bdt * total_violence_1000 +
+            Bhe * helog_knn + Bhdi * hdi_knn +
+            Bbcw * civilwarborder + Bug * urbangrowth_knn +
+            Bgini * gini_knn + Btrop * tropical + Bpol * xpolity_knn +
+            Bef * ef_knn + B05 * y05 + B10 * y10 + B15 * y15,
+        a ~ dnorm(55, 10),
+        Bpko ~ dnorm(0, 10),
+        Bdt ~ dnorm(0, 10),
+        Bbcw ~ dnorm(0, 10),
+        Bhe ~ dnorm(0, 10),
+        Bhdi ~ dnorm(0, 10),
+        Bug ~ dnorm(0, 10),
+        Bgini ~ dnorm(0, 10),
+        Btrop ~ dnorm(0, 10),
+        Bpol ~ dnorm(0, 10),
+        Bef ~ dnorm(0, 10),
+        c(B05, B10, B15) ~ dnorm(0, 10),
+        sigma ~ dcauchy(0, 2)
+
+    ), data = d, iter = 2000, chains = 4, cores = 2
+)
+
+# PKO x total violence.
+total_violence_int <- map2stan(
+    alist(
+        hale ~ dnorm(mu, sigma),
+        mu <- a + Bpko * pko_years + Bdt * total_violence_1000 +
+            Bint * pkoxdeath + Bhe * helog_knn + Bhdi * hdi_knn +
+            Bbcw * civilwarborder + Bug * urbangrowth_knn +
+            Bgini * gini_knn + Btrop * tropical + Bpol * xpolity_knn +
+            Bef * ef_knn + B05 * y05 + B10 * y10 + B15 * y15,
+        a ~ dnorm(55, 10),
+        Bpko ~ dnorm(0, 10),
+        Bdt ~ dnorm(0, 10),
+        Bint ~ dnorm(0, 10),
+        Bbcw ~ dnorm(0, 10),
+        Bhe ~ dnorm(0, 10),
+        Bhdi ~ dnorm(0, 10),
+        Bug ~ dnorm(0, 10),
+        Bgini ~ dnorm(0, 10),
+        Btrop ~ dnorm(0, 10),
+        Bpol ~ dnorm(0, 10),
+        Bef ~ dnorm(0, 10),
+        c(B05, B10, B15) ~ dnorm(0, 10),
+        sigma ~ dcauchy(0, 2)
+
+    ), data = d, iter = 2000, chains = 4, cores = 2
+)
+
+# Only OSV as measure of violence. --------------------------------------------
+# PKO, no interaction.
+osv_add <- map2stan(
+    alist(
+        hale ~ dnorm(mu, sigma),
+        mu <- a + Bpko * pko_years + Bdt * osv_1000 +
+            Bhe * helog_knn + Bhdi * hdi_knn +
+            Bbcw * civilwarborder + Bug * urbangrowth_knn +
+            Bgini * gini_knn + Btrop * tropical + Bpol * xpolity_knn +
+            Bef * ef_knn + B05 * y05 + B10 * y10 + B15 * y15,
+        a ~ dnorm(55, 10),
+        Bpko ~ dnorm(0, 10),
+        Bdt ~ dnorm(0, 10),
+        Bbcw ~ dnorm(0, 10),
+        Bhe ~ dnorm(0, 10),
+        Bhdi ~ dnorm(0, 10),
+        Bug ~ dnorm(0, 10),
+        Bgini ~ dnorm(0, 10),
+        Btrop ~ dnorm(0, 10),
+        Bpol ~ dnorm(0, 10),
+        Bef ~ dnorm(0, 10),
+        c(B05, B10, B15) ~ dnorm(0, 10),
+        sigma ~ dcauchy(0, 2)
+
+    ), data = d, iter = 2000, chains = 4, cores = 2
+)
+
+# PKO x OSV
+ovs_int <- map2stan(
+    alist(
+        hale ~ dnorm(mu, sigma),
+        mu <- a + Bpko * pko_years + Bdt * osv_1000 +
+            Bint * pkoxosv + Bhe * helog_knn + Bhdi * hdi_knn +
+            Bbcw * civilwarborder + Bug * urbangrowth_knn +
+            Bgini * gini_knn + Btrop * tropical + Bpol * xpolity_knn +
+            Bef * ef_knn + B05 * y05 + B10 * y10 + B15 * y15,
+        a ~ dnorm(55, 10),
+        Bpko ~ dnorm(0, 10),
+        Bdt ~ dnorm(0, 10),
+        Bint ~ dnorm(0, 10),
+        Bbcw ~ dnorm(0, 10),
+        Bhe ~ dnorm(0, 10),
+        Bhdi ~ dnorm(0, 10),
+        Bug ~ dnorm(0, 10),
+        Bgini ~ dnorm(0, 10),
+        Btrop ~ dnorm(0, 10),
+        Bpol ~ dnorm(0, 10),
+        Bef ~ dnorm(0, 10),
+        c(B05, B10, B15) ~ dnorm(0, 10),
+        sigma ~ dcauchy(0, 2)
+
+    ), data = d, iter = 2000, chains = 4, cores = 2
+)
+
+# Only BRDs as measure of violence. --------------------------------------------
+# PKO, no interaction.
+brd_add <- map2stan(
+    alist(
+        hale ~ dnorm(mu, sigma),
+        mu <- a + Bpko * pko_years + Bdt * brd_1000 +
+            Bhe * helog_knn + Bhdi * hdi_knn +
+            Bbcw * civilwarborder + Bug * urbangrowth_knn +
+            Bgini * gini_knn + Btrop * tropical + Bpol * xpolity_knn +
+            Bef * ef_knn + B05 * y05 + B10 * y10 + B15 * y15,
+        a ~ dnorm(55, 10),
+        Bpko ~ dnorm(0, 10),
+        Bdt ~ dnorm(0, 10),
+        Bbcw ~ dnorm(0, 10),
+        Bhe ~ dnorm(0, 10),
+        Bhdi ~ dnorm(0, 10),
+        Bug ~ dnorm(0, 10),
+        Bgini ~ dnorm(0, 10),
+        Btrop ~ dnorm(0, 10),
+        Bpol ~ dnorm(0, 10),
+        Bef ~ dnorm(0, 10),
+        c(B05, B10, B15) ~ dnorm(0, 10),
+        sigma ~ dcauchy(0, 2)
+
+    ), data = d, iter = 2000, chains = 4, cores = 2
+)
+
+# PKO X BRDs.
+brd_int <- map2stan(
+    alist(
+        hale ~ dnorm(mu, sigma),
+        mu <- a + Bpko * pko_years + Bdt * brd_1000 +
+            Bint * pkoxbrd + Bhe * helog_knn + Bhdi * hdi_knn +
+            Bbcw * civilwarborder + Bug * urbangrowth_knn +
+            Bgini * gini_knn + Btrop * tropical + Bpol * xpolity_knn +
+            Bef * ef_knn + B05 * y05 + B10 * y10 + B15 * y15,
+        a ~ dnorm(55, 10),
+        Bpko ~ dnorm(0, 10),
+        Bdt ~ dnorm(0, 10),
+        Bint ~ dnorm(0, 10),
+        Bbcw ~ dnorm(0, 10),
+        Bhe ~ dnorm(0, 10),
+        Bhdi ~ dnorm(0, 10),
+        Bug ~ dnorm(0, 10),
+        Bgini ~ dnorm(0, 10),
+        Btrop ~ dnorm(0, 10),
+        Bpol ~ dnorm(0, 10),
+        Bef ~ dnorm(0, 10),
+        c(B05, B10, B15) ~ dnorm(0, 10),
+        sigma ~ dcauchy(0, 2)
+
+    ), data = d, iter = 2000, chains = 4, cores = 2
+)
+
 # Informed priors. ------------------------------------------------------------
 # Using DALY 15-44 averaged for fe/males.
 # Untransformed variables.
