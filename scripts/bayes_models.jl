@@ -2,6 +2,9 @@ using DataFrames
 using StatsPlots
 using Turing
 using Queryverse
+using Random
+
+Random.seed!(2753) # prime number with each digit being prime
 
 df = load("data/data21Dec2020_2.dta") |> DataFrame
 
@@ -94,6 +97,7 @@ a_tv = model_add(df.dale, df.pkoyearsany, df.deathstotal_and_osv_1000,
     df.y15);
 
 chains = sample(a_tv, NUTS(), 1000)
+StatsPlots.plot(chains)
 
 
 # Additive, one-sided violence

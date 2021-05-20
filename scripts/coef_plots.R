@@ -4,23 +4,27 @@
 #' "interation_coef_plot.png" (figure 4) in the "figs" folder.
 ################################################################################
 
-#library(ggplot2)
-#library(patchwork)
-#library(rethinking)
+library(ggplot2)
+library(patchwork)
+library(rethinking)
+#library(ggthemes)
 
 # Additive models -------------------------------------------------------------
-theme_set(theme_bw())
-coef_plots <- function (data, title) {
+theme_set(theme_classic())
+coef_plots <- function (data, title, N, WAIC) {
+    capt <- paste0(paste0("N = ", N, "WAIC = ", WAIC,
+        sep = " "))
     ggplot(data, aes(x = variable, y = value, ymin = lower, ymax = upper)) +
     geom_pointrange(size = 0.125) +
     geom_hline(yintercept = 0, linetype = 2) +
     coord_flip() +
-    labs(title = title) +
+    labs(title = title, caption = capt) +
     ylab("") +
     scale_x_discrete(name ="",
         limits=c("sigma", "2015", "2010", "2005", "Ethnic Fract.", "x-Polity",
         "Tropical", "Gini", "Urban Growth", "Education",
-        "Health Exp","Cont.CW", "Violence", "PKO"))
+        "Health Exp","Cont.CW", "Violence", "PKO")) +
+        theme(text = element_text(family = "serif"))
 }
 
 variable <- c("PKO", "Violence", "Cont.CW", "Health Exp",
@@ -48,26 +52,38 @@ T3_M1s_df <- coef_df(T3_M1s, 15) # One-sided violence
 T4_M1s_df <- coef_df(T4_M1s, 15) # Battle-related deaths
 
 
-T2_M1plot <- coef_plots(T2_M1s_df, title = "Total Violence")
-T3_M1plot <- coef_plots(T3_M1s_df, title = "One-sided Violence")
-T4_M1plot <- coef_plots(T4_M1s_df, title = "Battle-related Deaths")
+T2_M1plot <- coef_plots(T2_M1s_df, title = "Total Violence", N = "681 ",
+    WAIC = "4082.77")
+T3_M1plot <- coef_plots(T3_M1s_df, title = "One-Sided Violence", N = "681 ",
+    WAIC = "4083.30") +
+    theme(
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
+T4_M1plot <- coef_plots(T4_M1s_df, title = "Battle-Related Deaths", N = "681 ",
+    WAIC = "4084.52") +
+    theme(
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
 T2_M1plot + T3_M1plot + T4_M1plot
 
-ggsave("figs/additive_coef_plot.png", height = 3, width = 12)
+ggsave("figs/additive_coef_plot.png", height = 4, width = 12, dpi = 500)
 
 
 # Interation models ------------------------------------------------------------
-coef_plots <- function (data, title) {
+coef_plots <- function (data, title, N, WAIC) {
+    capt <- paste0(paste0("N = ", N, "WAIC = ", WAIC,
+        sep = " "))
     ggplot(data, aes(x = variable, y = value, ymin = lower, ymax = upper)) +
     geom_pointrange(size = 0.125) +
     geom_hline(yintercept = 0, linetype = 2) +
     coord_flip() +
-    labs(title = title) +
+    labs(title = title, caption = capt) +
     ylab("") +
     scale_x_discrete(name ="",
         limits=c("sigma", "2015", "2010", "2005", "Ethnic Fract.","x-Polity",
         "Tropical", "Gini", "Urban Growth", "Education",
-        "Health Exp","Cont.CW", "PKO x Violence", "Violence", "PKO"))
+        "Health Exp","Cont.CW", "PKO x Violence", "Violence", "PKO")) +
+        theme(text = element_text(family = "serif"))
 }
 
 variable <- c("PKO", "Violence", "PKO x Violence", "Cont.CW", "Health Exp",
@@ -81,9 +97,18 @@ T3_M2s_df <- coef_df(T3_M2s, 16) # One-sided violence
 T4_M2s_df <- coef_df(T4_M2s, 16) # Battle-related deaths
 
 
-T2_M2plot <- coef_plots(T2_M2s_df, title = "Total Violence")
-T3_M2plot <- coef_plots(T3_M2s_df, title = "One-sided Violence")
-T4_M2plot <- coef_plots(T4_M2s_df, title = "Battle-related Deaths")
+T2_M2plot <- coef_plots(T2_M2s_df, title = "Total Violence", N = "681  ",
+    WAIC = "4082.17")
+T3_M2plot <- coef_plots(T3_M2s_df, title = "One-Sided Violence", N = "681  ",
+    WAIC = "4081.98") +
+    theme(
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
+T4_M2plot <- coef_plots(T4_M2s_df, title = "Battle-Related Deaths",
+    N = "681  ",  WAIC = "4085.92") +
+    theme(
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
 T2_M2plot + T3_M2plot + T4_M2plot
 
-ggsave("figs/interation_coef_plot.png", height = 3, width = 12)
+ggsave("figs/interation_coef_plot.jpeg", height = 4, width = 12, dpi = 320)

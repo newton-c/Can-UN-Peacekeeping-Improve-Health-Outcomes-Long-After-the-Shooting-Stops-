@@ -37,27 +37,27 @@ dat_all$dale_c <- dat_all$dale - mean(dat_all$dale, na.rm = T)
 
 ggplot() +
     geom_polygon(data = dat_all,
-                 aes(x = long,
-                     y = lat,
-                     group = group,
-                     fill = dale), color = "black", size = .1) +
+        aes(x = long,
+            y = lat,
+            group = group,
+            fill = dale), color = "black", size = .1) +
     scale_fill_gradient(low = "black", high = "white") +
     geom_point(data = dat_all,
-               aes(x = Longitude,
-                   y = Latitude,
-                   color = as.factor(pko_war_shape),
-                   shape = as.factor(pko_war_shape)),
-                   fill = as.factor(dat_all$pko_war_shape),
-                    size = dat_all$pko_war_shape / dat_all$pko_war_shape) +
+        aes(x = Longitude,
+            y = Latitude,
+            color = as.factor(pko_war_shape),
+            shape = as.factor(pko_war_shape)),
+            fill = "white",
+            size = 2) +
     coord_fixed(1.3) +
     scale_color_manual(breaks = c(0, 1, 2, 3),
-                       values = c('white', 'orange', 'green', 'pink'),
-                       labels = c('', 'War', 'Peacekeeping', 'War and \nPeacekeeping '),
-                       limits = c(1, 2, 3)) +
+        values = c('white', 'black', 'black', 'black'),
+        labels = c('', 'War', 'Peacekeeping', 'War and \nPeacekeeping '),
+        limits = c(1, 2, 3)) +
     scale_shape_manual(breaks = c(0, 1, 2, 3),
-                       values = c(4, 17, 3, 19),
-                       labels = c('', 'War', 'Peacekeeping', 'War and \nPeacekeeping '),
-                       limits = c(1, 2, 3)) +
+        values = c(4, 22, 21, 24),
+        labels = c('', 'War', 'Peacekeeping', 'War and \nPeacekeeping '),
+        limits = c(1, 2, 3)) +
     labs(x = "", y = "", fill = "Healthy Life \nExpectancy",
         color = NULL, shape = NULL) +
     facet_wrap(~year, nrow = 2) +

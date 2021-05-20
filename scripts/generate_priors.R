@@ -54,6 +54,10 @@ i15_44sd$mean_sd <- (as.numeric(i15_44sd$m15_44sd_i) +
     as.numeric(i15_44sd$f15_44sd_i)) / 2
 #View(i15_44sd)
 
+i15_44se <- data.frame(cbind(m15_44se_i, f15_44se_i, var_names_i))
+i15_44se$mean_se <- (as.numeric(i15_44se$m15_44se_i) +
+    as.numeric(i15_44se$f15_44se_i)) / 2
+View(i15_44se)
 
 # Additive models (unstandardized) ---------------------------------------------
 m15_44B_a_r <- c(ma_r[2], ma_r[3], ma_r[4], ma_r[5], ma_r[6], ma_r[7], ma_r[8],

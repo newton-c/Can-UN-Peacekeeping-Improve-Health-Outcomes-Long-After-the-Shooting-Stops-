@@ -7,6 +7,8 @@ ghobarah_etal_replication <- read_dta("data/Replication_Interactions.dta")
 ghobarah_etal_replication$k_total_log <-
     ghobarah_etal_replication$`_k_total_log`
 
+ghobarah_etal_replication$pko_yearsxdeath91_97 <-   
+    ghobarah_etal_replication$pko_years * ghobarah_etal_replication$deathn91_97
 
 # standardizing
 ghobarah_etal <- ghobarah_etal_replication %>%
