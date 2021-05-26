@@ -1,68 +1,134 @@
 library(bayesplot)
 color_scheme_set("darkgray")
 
-inform <- mcmc_areas(as.matrix(t2_m2_ip@stanfit), pars = vars('Bpko', 'Bdt', "Bint"),
-                 prob = 0, prob_outer = 1,
+# Total Violence Regularized
+total_violence_add_plot <- mcmc_areas(as.matrix(total_violence_add@stanfit),
+                     pars = vars("Bpko", "Bdt"),
+                 prob = 0.68, prob_outer = 0.99,
                  area_method = "scaled height") +
-    ggtitle("Total Violence") +
-    geom_vline(xintercept = 0, linetype = 2) +
-    scale_y_discrete(labels=c("PKO x Violence", "Violence", "PKO"),
-                     limits = c("Bint", "Bdt", "Bpko"))
+    ggtitle(label = "Total Violence", subtitle = "Regularized Priors") +
+    geom_vline(xintercept = 0, linetype = 1) +
+    scale_y_discrete(labels = c("Violence", "PKO"),
+                     limits = c("Bdt", "Bpko"))
+ggsave("figs/dist_plots/dist_add_tv.png", height = 4, width = 12)
 
-reg <- mcmc_areas(as.matrix(t2_m2_rp@stanfit), pars = vars('Bpko', 'Bdt', "Bint"),
-                 prob = 0, prob_outer = 1,
+total_violence_int_plot <- mcmc_areas(as.matrix(total_violence_int@stanfit),
+                                 pars = vars("Bpko", "Bdt", "Bint"),
+                 prob = 0.68, prob_outer = 0.99,
                  area_method = "scaled height") +
-    ggtitle("Total Violence") +
-    geom_vline(xintercept = 0, linetype = 2) +
-    scale_y_discrete(labels=c("PKO x Violence", "Violence", "PKO"),
+    ggtitle(label = "Total Violence", subtitle = "Regularized Priors") +
+    geom_vline(xintercept = 0, linetype = 1) +
+    scale_y_discrete(labels = c("PKO x Violence", "Violence", "PKO"),
                      limits = c("Bint", "Bdt", "Bpko"))
+ggsave("figs/dist_plots/dist_int_tv.png", height = 4, width = 12)
+
+# Total Violence Informative
+total_violence_add_inform_plot <-
+    mcmc_areas(as.matrix(total_violence_add_inform@stanfit),
+                     pars = vars("Bpko", "Bdt"),
+                 prob = 0.68, prob_outer = 0.99,
+                 area_method = "scaled height") +
+    ggtitle(label = "Total Violence", subtitle = "Informative Priors") +
+    geom_vline(xintercept = 0, linetype = 1) +
+    scale_y_discrete(labels = c("Violence", "PKO"),
+                     limits = c("Bdt", "Bpko"))
+ggsave("figs/dist_plots/dist_add_tv_inform.png", height = 4, width = 12)
+
+total_violence_int_inform_plot <-
+    mcmc_areas(as.matrix(total_violence_int_inform@stanfit),
+                                 pars = vars("Bpko", "Bdt", "Bint"),
+                 prob = 0.68, prob_outer = .99,
+                 area_method = "scaled height") +
+    ggtitle(label = "Total Violence", subtitle = "Informative Priors") +
+    geom_vline(xintercept = 0, linetype = 1) +
+    scale_y_discrete(labels = c("PKO x Violence", "Violence", "PKO"),
+                     limits = c("Bint", "Bdt", "Bpko"))
+ggsave("figs/dist_plots/dist_int_tv_inform.png", height = 4, width = 12)
+
+# One-Sided Violence ----------------------------------------------------------
+# Regularized
+osv_add_plot <- mcmc_areas(as.matrix(osv_add@stanfit),
+                     pars = vars("Bpko", "Bdt"),
+                 prob = 0.68, prob_outer = 0.99,
+                 area_method = "scaled height") +
+    ggtitle(label = "One-Sided Violence", subtitle = "Regularized Priors") +
+    geom_vline(xintercept = 0, linetype = 1) +
+    scale_y_discrete(labels = c("Violence", "PKO"),
+                     limits = c("Bdt", "Bpko"))
+ggsave("figs/dist_plots/dist_add_osv.png", height = 4, width = 12)
+
+osv_int_plot  <- mcmc_areas(as.matrix(osv_int@stanfit),
+                                 pars = vars("Bpko", "Bdt", "Bint"),
+                 prob = 0.68, prob_outer = 0.99,
+                 area_method = "scaled height") +
+    ggtitle(label = "One-Sided Violence", subtitle = "Regularized Priors") +
+    geom_vline(xintercept = 0, linetype = 1) +
+    scale_y_discrete(labels = c("PKO x Violence", "Violence", "PKO"),
+                     limits = c("Bint", "Bdt", "Bpko"))
+ggsave("figs/dist_plots/dist_int_osv.png", height = 4, width = 12)
+
+# Informative
+osv_add_inform_plot <- mcmc_areas(as.matrix(osv_add_inform@stanfit),
+                     pars = vars("Bpko", "Bdt"),
+                 prob = 0.68, prob_outer = 0.99,
+                 area_method = "scaled height") +
+    ggtitle(label = "One-Sided Violence", subtitle = "Informative Priors") +
+    geom_vline(xintercept = 0, linetype = 1) +
+    scale_y_discrete(labels = c("Violence", "PKO"),
+                     limits = c("Bdt", "Bpko"))
+ggsave("figs/dist_plots/dist_add_osv_inform.png", height = 4, width = 12)
+
+osv_int_inform_plot <- mcmc_areas(as.matrix(osv_int_inform@stanfit),
+                                 pars = vars("Bpko", "Bdt", "Bint"),
+                 prob = 0.68, prob_outer = .99,
+                 area_method = "scaled height") +
+    ggtitle(label = "One-Sided Violence", subtitle = "Informative Priors") +
+    geom_vline(xintercept = 0, linetype = 1) +
+    scale_y_discrete(labels = c("PKO x Violence", "Violence", "PKO"),
+                     limits = c("Bint", "Bdt", "Bpko"))
+ggsave("figs/dist_plots/dist_int_osv_inform.png", height = 4, width = 12)
 
 
-# Original specifications
-mcmc_areas(as.matrix(T2_M1@stanfit), pars=vars('Bpko', 'Bdt'),
-                 prob = 0.89, prob_outer=0.95, area_method = "scaled height") +
-    geom_vline(xintercept = 0, alpha = 0.4) +
-    geom_vline(xintercept = precis(T2_M1)@.Data[[3]][2], linetype = 2) +
-    ggtitle("Total Violence") +
-    geom_vline(xintercept = T2_M1@.Data[[2]][3], linetype = 2) +
-    scale_y_discrete(labels=c("Violence", "PKO"), limits = c("Bdt", "Bpko"))
-ggsave("figs/dist_add_tv.png", height = 8, width = 20)
+# Battle-Related Deaths -------------------------------------------------------
+# Regularized
+brd_add_plot <- mcmc_areas(as.matrix(brd_add@stanfit),
+                     pars = vars("Bpko", "Bdt"),
+                 prob = 0.68, prob_outer = 0.99,
+                 area_method = "scaled height") +
+    ggtitle(label = "Battle-Related Deaths", subtitle = "Regularized Priors") +
+    geom_vline(xintercept = 0, linetype = 1) +
+    scale_y_discrete(labels = c("Violence", "PKO"),
+                     limits = c("Bdt", "Bpko"))
+ggsave("figs/dist_plots/dist_add_brd.png", height = 4, width = 12)
 
-mcmc_areas(as.matrix(T3_M1@stanfit), pars=vars('Bpko', 'Bdt'),
-                 prob = 0.89, prob_outer=0.95, area_method = "scaled height")+
-    geom_vline(xintercept = 0, alpha = 0.4) +
-    ggtitle("One-Sided Violence") +
-    scale_y_discrete(labels=c("Violence", "PKO"), limits = c("Bdt", "Bpko"))
-ggsave("figs/dist_add_osv.png", height = 8, width = 20)
+brd_int_plot  <- mcmc_areas(as.matrix(brd_int@stanfit),
+                                 pars = vars("Bpko", "Bdt", "Bint"),
+                 prob = 0.68, prob_outer = 0.99,
+                 area_method = "scaled height") +
+    ggtitle(label = "Battle-Related Deaths", subtitle = "Regularized Priors") +
+    geom_vline(xintercept = 0, linetype = 1) +
+    scale_y_discrete(labels = c("PKO x Violence", "Violence", "PKO"),
+                     limits = c("Bint", "Bdt", "Bpko"))
+ggsave("figs/dist_plots/dist_int_brd.png", height = 4, width = 12)
 
-mcmc_areas(as.matrix(T4_M1@stanfit), pars=vars('Bpko', 'Bdt'),
-                 prob = 0.89, prob_outer=0.95, area_method = "scaled height")+
-    geom_vline(xintercept = 0, alpha = 0.4) +
-    ggtitle("Battle-Related Deaths") +
-    scale_y_discrete(labels=c("Violence", "PKO"), limits = c("Bdt", "Bpko"))
-ggsave("figs/dist_add_brd.png", height = 8, width = 20)
+# Informative
+brd_add_inform_plot <- mcmc_areas(as.matrix(brd_add_inform@stanfit),
+                     pars = vars("Bpko", "Bdt"),
+                 prob = 0.68, prob_outer = 0.99,
+                 area_method = "scaled height") +
+    ggtitle(label = "Battle-Related Deaths", subtitle = "Informative Priors") +
+    geom_vline(xintercept = 0, linetype = 1) +
+    scale_y_discrete(labels = c("Violence", "PKO"),
+                     limits = c("Bdt", "Bpko"))
+ggsave("figs/dist_plots/dist_add_brd_inform.png", height = 4, width = 12)
 
-# Interations
-mcmc_areas(as.matrix(T2_M2@stanfit), pars=vars('Bpko', 'Bdt', 'Bint'),
-                 prob = 0.89, prob_outer=0.95, area_method = "scaled height")+
-    geom_vline(xintercept = 0, alpha = 0.4) +
-    ggtitle("Total Violence") +
-    scale_y_discrete(labels=c("Violence x PKO", "Violence", "PKO"),
-    limits = c("Bint", "Bdt", "Bpko"))
-ggsave("figs/dist_int_tv.png", height = 8, width = 20)
+brd_int_inform_plot <- mcmc_areas(as.matrix(brd_int_inform@stanfit),
+                                 pars = vars("Bpko", "Bdt", "Bint"),
+                 prob = 0.68, prob_outer = .99,
+                 area_method = "scaled height") +
+    ggtitle(label = "Battle-Related Deaths", subtitle = "Informative Priors") +
+    geom_vline(xintercept = 0, linetype = 1) +
+    scale_y_discrete(labels = c("PKO x Violence", "Violence", "PKO"),
+                     limits = c("Bint", "Bdt", "Bpko"))
+ggsave("figs/dist_plots/dist_int_brd_inform.png", height = 4, width = 12)
 
-mcmc_areas(as.matrix(T3_M2@stanfit), pars=vars('Bpko', 'Bdt', 'Bint'),
-                 prob = 0.89, prob_outer=0.95, area_method = "scaled height")+
-    geom_vline(xintercept = 0, alpha = 0.4) +
-    ggtitle("One-Sided Violence") +
-    scale_y_discrete(labels=c("Violence x PKO", "Violence", "PKO"),
-    limits = c("Bint", "Bdt", "Bpko"))
-ggsave("figs/dist_int_osv.png", height = 8, width = 20)
-
-mcmc_areas(as.matrix(T4_M2@stanfit), pars=vars('Bpko', 'Bdt', 'Bint'),
-                 prob = 0.89, prob_outer=0.95, area_method = "scaled height")+
-    geom_vline(xintercept = 0, alpha = 0.4) +
-    ggtitle("Battle-Related Deaths") +
-    scale_y_discrete(labels=c("Violence x PKO", "Violence", "PKO"),
-    limits = c("Bint", "Bdt", "Bpko"))
-ggsave("figs/dist_int_brd.png", height = 8, width = 20)

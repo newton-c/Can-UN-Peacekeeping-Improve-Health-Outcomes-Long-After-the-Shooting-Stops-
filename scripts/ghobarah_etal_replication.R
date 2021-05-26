@@ -1,28 +1,29 @@
+library(dplyr)
 library(haven)
 library(lmtest)
 library(sandwich)
 
-ghobarah_etal_replication <- read_dta("data/Replication_Interactions.dta")
+replication <- read_dta("data/Replication_Interactions.dta")
 
-ghobarah_etal_replication$k_total_log <-
-    ghobarah_etal_replication$`_k_total_log`
+replication$k_total_log <- replication$`_k_total_log`
 
-ghobarah_etal_replication$pko_yearsxdeath91_97 <-   
-    ghobarah_etal_replication$pko_years * ghobarah_etal_replication$deathn91_97
+replication$pko_yearsxdeath91_97 <-
+    replication$pko_years * replication$deathn91_97
 
 # standardizing
-ghobarah_etal <- ghobarah_etal_replication %>%
-	mutate_at(c('dalyp15_44', 'pko_years', 'deathn91_97',
-    'k_total_log', 'log_educational_attainment', 'contig_civil_war',
-    'growth_urban_pop_un', 'gini', 'polity', 'log_vanhanen'), ~(scale(.) %>%
+replication_sd <- replication %>%
+    mutate_at(c("dalyp15_44", "pko_years", "deathn91_97",
+    "k_total_log", "log_educational_attainment", "contig_civil_war",
+    "growth_urban_pop_un", "gini", "polity", "log_vanhanen"),
+              ~ (scale(.) %>%
     as.vector))
 
-ghobarah_etal$pko_yearsxdeath91_97 <- ghobarah_etal$pko_years *
-    ghobarah_etal$deathn91_97
+replication_sd$pko_yearsxdeath91_97 <- replication_sd$pko_years *
+    replication_sd$deathn91_97
 
 # Subsets are dat_gndr_ct, so dat_2_1 is a subset where gnrd == 2 and ct == 1.
-dat_2_1 <- filter(ghobarah_etal, gndr == 2 & ct == 1)
-dat_3_25 <- filter(ghobarah_etal, gndr == 3 & ct == 25)
+dat_2_1 <- filter(replication_sd, gndr == 2 & ct == 1)
+dat_3_25 <- filter(replication_sd, gndr == 3 & ct == 25)
 
 
 # male, additive
@@ -53,12 +54,12 @@ mi <- coeftest(mi, vcov = vcovHC(mi, type = "HC1"))
 fi <- coeftest(fi, vcov = vcovHC(fi, type = "HC1"))
 
 # Unstandardized models --------------------------------------------------------
-ghobarah_etal$pko_yearsxdeath91_97 <- ghobarah_etal$pko_years *
-    ghobarah_etal$deathn91_97
+replication_sd$pko_yearsxdeath91_97 <- replication_sd$pko_years *
+    replication_sd$deathn91_97
 
 # Subsets are dat_gndr_ct, so dat_2_1 is a subset where gnrd == 2 and ct == 1.
-dat_2_1r <- filter(ghobarah_etal_replication, gndr == 2 & ct == 1)
-dat_3_25r <- filter(ghobarah_etal_replication, gndr == 3 & ct == 25)
+dat_2_1r <- filter(replication, gndr == 2 & ct == 1)
+dat_3_25r <- filter(replication, gndr == 3 & ct == 25)
 
 
 # male, additive
