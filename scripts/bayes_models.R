@@ -87,7 +87,7 @@ osv_add <- map2stan(
 )
 
 # PKO x OSV
-ovs_int <- map2stan(
+osv_int <- map2stan(
     alist(
         hale ~ dnorm(mu, sigma),
         mu <- a + Bpko * pko_years + Bdt * osv_1000 +
@@ -280,7 +280,7 @@ osv_int_inform <- map2stan(
 
 # Only BRD as measure of violence. --------------------------------------------
 # PKO, no interaction.
-brd_add_infrom <- map2stan(
+brd_add_inform <- map2stan(
     alist(
         hale ~ dnorm(mu, sigma),
         mu <- a + Bpko * pko_years + Bdt * brd_1000 +
