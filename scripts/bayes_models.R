@@ -167,7 +167,7 @@ brd_int <- map2stan(
     ), data = d, iter = 2000, chains = 4, cores = 2
 )
 
-# Informed priors. ------------------------------------------------------------
+# Informedative priors ---------------------------------------------------------
 # Using DALY 15-44 averaged for fe/males.
 # Untransformed variables.
 # PKO, no interaction.
