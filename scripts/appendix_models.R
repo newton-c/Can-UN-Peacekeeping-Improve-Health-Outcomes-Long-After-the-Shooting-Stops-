@@ -25,7 +25,7 @@ stargazer(model_1, model_2, model_3, title = "Frequentist Additive Models",
         "Battle-Related Deaths", "Cont.CW", "Health Exp", "Education",
         "Urban Growth", "Gini", "Tropical", "x-Polity", "Ethnic Fract.",
         "2005", "2010", "2015"),
-    type = "text", out = "figs/appendix_freq_add.txt"
+    type = "text", out = "figs/appendix/appendix_freq_add.txt"
 )
 
 # Table 2: Interaction models --------------------------------------------------
@@ -47,7 +47,7 @@ stargazer(model_1, model_2, model_3, title = "Frequentist Interaction Models",
         "Battle-Related Deaths", "PKO x Battle-Related Deaths", "Cont.CW",
         "Health Exp", "Education", "Urban Growth", "Gini", "Tropical",
         "x-Polity", "Ethnic Fract.", "2005", "2010", "2015"),
-    type = "text", out = "figs/appendix_freq_int.txt"
+    type = "text", out = "figs/appendix/appendix_freq_int.txt"
 )
 
 
@@ -73,7 +73,7 @@ stargazer(model_1, model_2, model_3,
         "Battle-Related Deaths", "Cont.CW", "Health Exp", "Education",
         "Urban Growth", "Gini", "Tropical", "x-Polity", "Ethnic Fract.",
         "2005", "2010", "2015"),
-    type = "text", out = "figs/appendix_freq_add_no.txt"
+    type = "text", out = "figs/appendix/appendix_freq_add_no.txt"
 )
 
 # Table 4: Interaction models, no outliers -------------------------------------
@@ -96,7 +96,7 @@ stargazer(model_1, model_2, model_3,
         "Battle-Related Deaths", "PKO x Battle-Related Deaths", "Cont.CW",
         "Health Exp", "Education", "Urban Growth", "Gini", "Tropical",
         "x-Polity", "Ethnic Fract.", "2005", "2010", "2015"),
-    type = "text", out = "figs/appendix_freq_int_no.txt"
+    type = "text", out = "figs/appendix/appendix_freq_int_no.txt"
 )
 
 
@@ -148,7 +148,7 @@ stargazer(fa_r, ma_r, fi_r, mi_r, title = "Unstandardized Models",
         "Ethnic Fract."),
     column.labels = c("Female 15-44", "Male 15-44", "Female 15-44",
         "Male 15-44"),
-    type = "text", out = "figs/appendix_ghobarah_unst.txt"
+    type = "text", out = "figs/appendix/appendix_ghobarah_unst.txt"
 )
 
 # Prior generating models: standardized ----------------------------------------
@@ -200,64 +200,47 @@ stargazer(fa, ma, fi, mi, title = "Standardized Models",
         "Ethnic Fract."),
     column.labels = c("Female 15-44", "Male 15-44", "Female 15-44",
         "Male 15-44"),
-    type = "text", out = "figs/appendix_ghobarah_st.txt"
+    type = "text", out = "figs/appendix/appendix_ghobarah_st.txt"
 )
 
 # Mataching -------------------------------------------------------------------
-# Table A3: Additive models 
+cem_data <- read_dta("data/matched_data.dta")
+
+# Table A3: Matching
 model_1 <- lm(hale ~ pko_years + total_violence_1000 + civilwarborder +
     helog_knn + hdi_knn + urbangrowth_knn + gini_knn + tropical + xpolity_knn +
-    ef_knn + y05 + y10 + y15, data = d, weights = cem_weights)
+    ef_knn + y05 + y10 + y15, data = cem_data, weights = cem_data$weights)
 
 model_2 <- lm(hale ~ pko_years + osv_1000 + civilwarborder +
     helog_knn + hdi_knn + urbangrowth_knn + gini_knn + tropical + xpolity_knn +
-    ef_knn + y05 + y10 + y15, data = d, weights = cem_weights)
+    ef_knn + y05 + y10 + y15, data = cem_data, weights = cem_data$weights)
 
 model_3 <- lm(hale ~ pko_years + brd_1000 + civilwarborder +
     helog_knn + hdi_knn + urbangrowth_knn + gini_knn + tropical + xpolity_knn +
-    ef_knn + y05 + y10 + y15, data = d, weights = cem_weights)
-
-stargazer(model_1, model_2, model_3, title = "Matching Additive Models",
-    covariate.labels = c("PKO", "Total Violence", "One-Sided Violence",
-        "Battle-Related Deaths", "Cont.CW", "Health Exp", "Education",
-        "Urban Growth", "Gini", "Tropical", "x-Polity", "Ethnic Fract.",
-        "2005", "2010", "2015"),
-    type = "text", out = "figs/appendix_freq_add_matching.txt"
-)
-
-# Table A4: Interaction models ------------------------------------------------
-model_1 <- lm(hale ~ pko_years + total_violence_1000 + pkoxdeath +
-    civilwarborder + helog_knn + hdi_knn + urbangrowth_knn + gini_knn +
-    tropical + xpolity_knn + ef_knn + y05 + y10 + y15, data = d,
-    weights = cem_weights)
-
-model_2 <- lm(hale ~ pko_years + osv_1000 + pkoxosv + civilwarborder +
-    helog_knn + hdi_knn + urbangrowth_knn + gini_knn + tropical + xpolity_knn +
-    ef_knn + y05 + y10 + y15, data = d, weights = cem_weights)
-
-model_3 <- lm(hale ~ pko_years + brd_1000 + pkoxbrd + civilwarborder +
-    helog_knn + hdi_knn + urbangrowth_knn + gini_knn + tropical + xpolity_knn +
-    ef_knn + y05 + y10 + y15, data = d, weights = cem_weights)
+    ef_knn + y05 + y10 + y15, data = cem_data, weights = cem_data$weights)
 
 model_4 <- lm(hale ~ pko_years + total_violence_1000 + pkoxdeath +
     civilwarborder + helog_knn + hdi_knn + urbangrowth_knn + gini_knn +
-    tropical + xpolity_knn + ef_knn + y05 + y10 + y15, data = d_no,
-    weights = cem_weights)
+    tropical + xpolity_knn + ef_knn + y05 + y10 + y15, data = cem_data,
+    weights = cem_data$weights)
 
 model_5 <- lm(hale ~ pko_years + osv_1000 + pkoxosv + civilwarborder +
     helog_knn + hdi_knn + urbangrowth_knn + gini_knn + tropical + xpolity_knn +
-    ef_knn + y05 + y10 + y15, data = d_no, weights = cem_weights)
+    ef_knn + y05 + y10 + y15, data = cem_data, weights = cem_data$weights)
 
 model_6 <- lm(hale ~ pko_years + brd_1000 + pkoxbrd + civilwarborder +
     helog_knn + hdi_knn + urbangrowth_knn + gini_knn + tropical + xpolity_knn +
-    ef_knn + y05 + y10 + y15, data = d_no, weights = cem_weights)
+    ef_knn + y05 + y10 + y15, data = cem_data, weights = cem_data$weights)
 
-stargazer(model_1, model_2, model_3, title = "Matching Interaction Models",
-    covariate.labels = c("PKO", "Total Violence", "PKO x Total Violence",
-        "One-Sided Violence", "PKO x One-Sided Violence",
-        "Battle-Related Deaths", "PKO x Battle-Related Deaths", "Cont.CW",
-        "Health Exp", "Education", "Urban Growth", "Gini", "Tropical",
-        "x-Polity", "Ethnic Fract.", "2005", "2010", "2015"),
-    type = "text", out = "figs/appendix_freq_int_matching_no.txt"
+stargazer(model_1, model_2, model_3, model_4, model_5, model_6, 
+          title = "Matching Models",
+    covariate.labels = c("PKO", "Total Violence", "One-Sided Violence",
+                         "Battle-Related Deaths", "PKO x Total Violence",
+                         "PKO x One-Sided Violence",
+                         "PKO x Battle-Related Deaths", "Contig. CW",
+                         "Health Exp", "Education", "Urban Growth",
+                         "Income Inequality", "Tropical", "x-Polity",
+                         "Ethnic Fract.", "2005", "2010", "2015"),
+    type = "text", out = "figs/appendix/appendix_freq_matching.txt"
 )
 
