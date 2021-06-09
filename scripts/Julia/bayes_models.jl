@@ -67,17 +67,17 @@ end
     𝚡11, 𝚡12, 𝚡13)
   σ ~ truncated(Cauchy(0, 2), 0, Inf)
 
-  βpko ~ Normal(1.714, 6.886)
-  βdt ~ Normal(-0.363, 1.881)
+  βpko ~ Normal(1.551, 7.509)
+  βdt ~ Normal(-0.558, 4.630)
   βint ~ Normal(0.052, 1.113)
-  βbcw ~ Normal(-10.196, 43.414)
-  βhe ~ Normal(2.109, 29.542)
-  βhdi ~ Normal(5.520, 60.861)
-  βug ~ Normal(-7.211, 40.847)
-  βgini ~ Normal(-51.364, 359.454)
-  βtrop ~ Normal(-3.22, 58.099)
-  βpol ~ Normal(-0.135, 3.757)
-  βef ~ Normal(-0.922, 18.047)
+  βbcw ~ Normal(-10.161, 43.603)
+  βhe ~ Normal(2.034, 29.953)
+  βhdi ~ Normal(5.427, 61.087)
+  βug ~ Normal(-7.229, 41.008)
+  βgini ~ Normal(-52.547, 363.284)
+  βtrop ~ Normal(-3.189, 58.275)
+  βpol ~ Normal(-0.133, 3.771)
+  βef ~ Normal(-0.967, 18.066)
   β05 ~ Normal(0, 10)
   β10 ~ Normal(0, 10)
   β15 ~ Normal(0, 10)
@@ -97,7 +97,7 @@ a_tv = model_add(df.dale, df.pkoyearsany, df.deathstotal_and_osv_1000,
     df.gini_knn, df.tropical, df.xpolity_knn, df.ef_knn, df.y05, df.y10,
     df.y15);
 
-chains = sample(a_tv, NUTS(), 1000)
+chains = sample(a_tv, NUTS(), 2000)
 StatsPlots.plot(chains)
 
 
@@ -107,7 +107,7 @@ a_osv = model_add(df.dale, df.pkoyearsany, df.osv_per1000,
     df.gini_knn, df.tropical, df.xpolity_knn, df.ef_knn, df.y05, df.y10,
     df.y15);
 
-chains = sample(a_osv, NUTS(), 1000)
+chains = sample(a_osv, NUTS(), 2000)
 
 
 # Additive, battle-related deaths
@@ -119,16 +119,16 @@ a_brd = model_add(df.dale, df.pkoyearsany, df.deathstotal_new,
 chains = sample(a_brd, NUTS(), 1000)
 
 # Interaction, total violence
-a_tv = model_int(df.dale, df.pkoyearsany, df.deathstotal_and_osv_1000,
-    df.civilwarborder, df.helog_knn, df.hdi_knn, df.urbangrowth_knn,
-    df.gini_knn, df.tropical, df.xpolity_knn, df.ef_knn, df.y05, df.y10,
-    df.y15);
+i_tv = model_int(df.hale, df.pko_years,
+    df.pkoxdeath, df.civilwarborder, df.helog_knn, df.hdi_knn,
+    df.urbangrowth_knn, df.gini_knn, df.tropical , df.xpolity_knn, df.ef_knn,
+    df.y05 , df.y10, df.y15);
 
-chains = sample(a_tv, NUTS(), 1000)
+@time chains = sample(i_tv, NUTS(), 1000)
 
 
 # Interaction, one-sided violence
-a_osv = model_int(df.dale, df.pkoyearsany, df.osv_per1000,
+i_osv = model_int(df.dale, df.pkoyearsany, df.osv_per1000,
     df.civilwarborder, df.helog_knn, df.hdi_knn, df.urbangrowth_knn,
     df.gini_knn, df.tropical, df.xpolity_knn, df.ef_knn, df.y05, df.y10,
     df.y15);
@@ -137,7 +137,7 @@ chains = sample(a_osv, NUTS(), 1000)
 
 
 # Interaction, battle-related deaths
-a_brd = model_int(df.dale, df.pkoyearsany, df.deathstotal_new,
+i_brd = model_int(df.dale, df.pkoyearsany, df.deathstotal_new,
     df.civilwarborder, df.helog_knn, df.hdi_knn, df.urbangrowth_knn,
     df.gini_knn, df.tropical, df.xpolity_knn, df.ef_knn, df.y05, df.y10,
     df.y15);

@@ -3,6 +3,8 @@ library(haven)
 library(modelsummary)
 library(rethinking)
 
+set.seed(2753)
+
 d <- read_dta("data/hale_data.dta")
 
 # Regularized priors ----------------------------------------------------------
@@ -197,6 +199,7 @@ total_violence_add_inform <- map2stan(
 )
 
 # PKO x total violence.
+start_time <- Sys.time()
 total_violence_int_inform <- map2stan(
     alist(
         hale ~ dnorm(mu, sigma),
@@ -222,7 +225,8 @@ total_violence_int_inform <- map2stan(
 
     ), data = d, iter = 2000, chains = 4, cores = 2
 )
-
+end_time <- Sys.time()
+print(end_time - start_time)
 # OSV as measure of violence --------------------------------------------------
 # PKO no interaction.
 osv_add_inform <- map2stan(
