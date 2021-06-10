@@ -11,14 +11,15 @@ library(rethinking)
 
 # Additive models -------------------------------------------------------------
 theme_set(theme_classic())
-coef_plots <- function(data, title, N, WAIC) {
-    capt <- paste0(paste0("N = ", N, "WAIC = ", WAIC,
-        sep = " "))
+coef_plots <- function(data, title, N, WAIC, capt) {
+    capt_text <- paste0("Measure of Violence = ", capt, "\n", "N = ", N, "\n",
+                        "WAIC = ", WAIC, "\n")
     ggplot(data, aes(x = variable, y = value, ymin = lower, ymax = upper)) +
     geom_pointrange(size = 0.125) +
     geom_hline(yintercept = 0, linetype = 2) +
     coord_flip() +
-    labs(title = title, caption = capt) +
+    labs(title = title,
+         caption = capt_text) +
     ylab("") +
     scale_x_discrete(name = "",
         limits = c("sigma", "2015", "2010", "2005", "Ethnic Fract.", "x-Polity",
@@ -53,15 +54,17 @@ brd_add_df <- coef_df(brd_add_inform_sd, 15)
 
 
 total_violence_add_plot <- coef_plots(total_violence_add_df,
-                                      title = "Total Violence", N = "681 ",
+                                      title = "Healthy Life Expectancy",
+                                      capt = "Total Violence", N = "681",
                                       WAIC = "4083.33")
 
-osv_add_plot <- coef_plots(osv_add_df, title = "One-Sided Violence", N = "681 ",
-                           WAIC = "4083.44") +
+osv_add_plot <- coef_plots(osv_add_df, title = "", capt = "One-Sided Violence",
+                           N = "681", WAIC = "4083.44") +
     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 
-brd_add_plot <- coef_plots(brd_add_df, title = "Battle-Related Deaths",
-                           N = "681 ", WAIC = "4083.89") +
+brd_add_plot <- coef_plots(brd_add_df, title = "",
+                           capt = "Battle-Related Deaths", N = "681",
+                           WAIC = "4083.89") +
     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 
 total_violence_add_plot + osv_add_plot + brd_add_plot
