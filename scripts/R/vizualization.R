@@ -35,6 +35,7 @@ dat_all$pko_war_shape <- ifelse(is.na(dat_all$intensity) &
 table(dat_all$pko_war_shape)
 dat_all$dale_c <- dat_all$dale - mean(dat_all$dale, na.rm = T)
 
+# greyscale map
 ggplot() +
     geom_polygon(data = dat_all,
         aes(x = long,
@@ -51,25 +52,67 @@ ggplot() +
             size = 2) +
     coord_fixed(1.3) +
     scale_color_manual(breaks = c(0, 1, 2, 3),
-        values = c('white', 'black', 'black', 'black'),
-        labels = c('', 'War', 'Peacekeeping', 'War and \nPeacekeeping '),
+        values = c("white", "black", "black", "black"),
+        labels = c("", "War", "Peacekeeping", "War and \nPeacekeeping "),
         limits = c(1, 2, 3)) +
     scale_shape_manual(breaks = c(0, 1, 2, 3),
         values = c(4, 22, 21, 24),
-        labels = c('', 'War', 'Peacekeeping', 'War and \nPeacekeeping '),
+        labels = c("", "War", "Peacekeeping", "War and \nPeacekeeping "),
         limits = c(1, 2, 3)) +
     labs(x = "", y = "", fill = "Healthy Life \nExpectancy",
         color = NULL, shape = NULL) +
     facet_wrap(~year, nrow = 2) +
-    theme(text = element_text(family = 'serif'),
+    theme(text = element_text(family = "serif"),
         axis.text.x = element_blank(),
         axis.text.y = element_blank(),
         axis.ticks = element_blank(),
         legend.position = "right",
-        legend.key.size = unit(.5, 'cm')
+        legend.key.size = unit(.5, "cm")
     )
 
-ggsave("figs/map.png", height = 8, width = 12)
+ggsave("figs/map_bw.png", height = 8, width = 12)
+
+# shapes with color map
+ggplot() +
+    geom_polygon(data = dat_all,
+        aes(x = long,
+            y = lat,
+            group = group,
+            fill = dale), color = "black", size = .1) +
+    scale_fill_gradient(low = "black", high = "white") +
+    geom_point(data = dat_all,
+        aes(x = Longitude,
+            y = Latitude,
+            color = as.factor(pko_war_shape),
+            shape = as.factor(pko_war_shape)),
+            fill = ifelse(dat_all$pko_war_shape == 1, "red",
+                          ifelse(dat_all$pko_war_shape == 2, "blue",
+                                 ifelse(dat_all$pko_war_shape == 3, "purple",
+                                        "white")
+                                 )
+                          ),
+            size = 2) +
+    coord_fixed(1.3) +
+    scale_color_manual(breaks = c(0, 1, 2, 3),
+        values = c("white", "black", "black", "black"),
+        labels = c("", "War", "Peacekeeping", "War and \nPeacekeeping "),
+        limits = c(1, 2, 3)) +
+    scale_shape_manual(breaks = c(0, 1, 2, 3),
+        values = c(4, 22, 21, 24),
+        labels = c("", "War", "Peacekeeping", "War and \nPeacekeeping "),
+        limits = c(1, 2, 3)) +
+    labs(x = "", y = "", fill = "Healthy Life \nExpectancy",
+        color = NULL, shape = NULL) +
+    facet_wrap(~year, nrow = 2) +
+    theme(text = element_text(family = "serif"),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "right",
+        legend.key.size = unit(.5, "cm")
+    )
+
+ggsave("figs/map_color.png", height = 8, width = 12)
 
 
 # Chad -------------------------------------------------------------------------
@@ -247,4 +290,4 @@ plot_gg(p, width = 5, height = 5, multicore = TRUE, scale = 250,
         zoom = 0.7, theta = 10, phi = 30, windowsize = c(800, 800))
 Sys.sleep(0.2)
 
-#render_snapshot(clear = TRUE)
+#render_snapshot(clear = true)
